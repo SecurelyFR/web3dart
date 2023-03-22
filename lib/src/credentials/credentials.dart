@@ -24,16 +24,15 @@ abstract class Credentials {
   bool get isolateSafe => false;
 
   /// Loads the ethereum address specified by these credentials.
-  @Deprecated('Please use [address]')
   Future<EthereumAddress> extractAddress();
 
+  @Deprecated('Please use [extractAddress]')
   EthereumAddress get address;
 
   /// Signs the [payload] with a private key. The output will be like the
   /// bytes representation of the [eth_sign RPC method](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign),
   /// but without the "Ethereum signed message" prefix.
   /// The [payload] parameter contains the raw data, not a hash.
-  @Deprecated('Please use [signToUint8List]')
   Future<Uint8List> sign(
     Uint8List payload, {
     int? chainId,
@@ -54,6 +53,7 @@ abstract class Credentials {
   /// bytes representation of the [eth_sign RPC method](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign),
   /// but without the "Ethereum signed message" prefix.
   /// The [payload] parameter contains the raw data, not a hash.
+  @Deprecated('Please use [sign]')
   Uint8List signToUint8List(
     Uint8List payload, {
     int? chainId,
@@ -72,7 +72,6 @@ abstract class Credentials {
 
   /// Signs the [payload] with a private key and returns the obtained
   /// signature.
-  @Deprecated('Please use [signToEcSignature]')
   Future<MsgSignature> signToSignature(
     Uint8List payload, {
     int? chainId,
@@ -81,6 +80,7 @@ abstract class Credentials {
 
   /// Signs the [payload] with a private key and returns the obtained
   /// signature.
+  @Deprecated('Please use [signToSignature]')
   MsgSignature signToEcSignature(
     Uint8List payload, {
     int? chainId,
@@ -90,7 +90,6 @@ abstract class Credentials {
   /// Signs an Ethereum specific signature. This method is equivalent to
   /// [sign], but with a special prefix so that this method can't be used to
   /// sign, for instance, transactions.
-  @Deprecated('Please use [signPersonalMessageToUint8List]')
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
     final prefix = _messagePrefix + payload.length.toString();
     final prefixBytes = ascii.encode(prefix);
@@ -104,6 +103,7 @@ abstract class Credentials {
   /// Signs an Ethereum specific signature. This method is equivalent to
   /// [signToUint8List], but with a special prefix so that this method can't be used to
   /// sign, for instance, transactions.
+  @Deprecated('Please use [signPersonalMessage]')
   Uint8List signPersonalMessageToUint8List(Uint8List payload, {int? chainId}) {
     final prefix = _messagePrefix + payload.length.toString();
     final prefixBytes = ascii.encode(prefix);
@@ -180,7 +180,6 @@ class EthPrivateKey extends CredentialsWithKnownAddress {
   /// The public key corresponding to this private key.
   ECPoint get publicKey => (params.G * privateKeyInt)!;
 
-  @Deprecated('Please use [signToSignatureSync]')
   @override
   Future<MsgSignature> signToSignature(
     Uint8List payload, {
@@ -202,6 +201,7 @@ class EthPrivateKey extends CredentialsWithKnownAddress {
     return MsgSignature(signature.r, signature.s, chainIdV);
   }
 
+  @Deprecated('Please use [signToSignature]')
   @override
   MsgSignature signToEcSignature(
     Uint8List payload, {
